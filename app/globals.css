@@ -57,47 +57,100 @@ a {
 
 .site-header .shell {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  padding-top: 28px;
-  padding-bottom: 20px;
+  padding-top: 22px;
+  padding-bottom: 18px;
+  gap: 20px;
 }
 
-.wordmark {
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: var(--ink-strong);
+/* Brand: logo + hairline + descriptor. The logo PNG has generous vertical
+   padding, so we render it oversized inside a clipped box. */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
-.wordmark span {
-  display: block;
+/* The logo PNG carries a lot of vertical padding, so we render it oversized
+   inside a clipped box to bring the wordmark to a sensible header height. */
+.brand-logo-box {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.brand-logo {
+  height: 84px;
+  width: auto;
+}
+
+.brand-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--line);
+}
+
+.brand-tag {
   font-size: 12px;
   font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted);
-  margin-top: 2px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
 }
 
 .site-nav {
   display: flex;
-  gap: 28px;
+  align-items: center;
+  gap: 24px;
   font-size: 14px;
 }
 
-.site-nav a {
+.site-nav a,
+.nav-btn {
   color: var(--muted);
   padding-bottom: 2px;
 }
 
-.site-nav a:hover {
+.site-nav a:hover,
+.nav-btn:hover {
   color: var(--ink-strong);
+}
+
+.nav-btn {
+  font: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .site-nav a[data-active="true"] {
   color: var(--ink-strong);
   border-bottom: 2px solid var(--data);
+}
+
+.header-social {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-left: 20px;
+  border-left: 1px solid var(--line);
+}
+
+.icon-link {
+  color: var(--faint);
+  display: inline-flex;
+}
+
+.icon-link:hover {
+  color: var(--ink-strong);
 }
 
 .site-footer {
@@ -557,6 +610,7 @@ main.shell {
 
 .live-controls .text-input {
   flex: 1;
+  min-width: 0; /* allow the select to shrink below its long option text */
 }
 
 .live-controls .btn {
@@ -662,6 +716,154 @@ main.shell {
   font-size: 13.5px;
   color: var(--muted);
   font-style: italic;
+}
+
+/* ---------- custom query ---------- */
+
+.custom-query {
+  margin-top: 40px;
+}
+
+.custom-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--faint);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.custom-divider::before,
+.custom-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--ink-strong);
+  border: 1px solid var(--line);
+}
+
+.btn-secondary:hover {
+  background: var(--bg);
+  border-color: var(--muted);
+}
+
+/* ---------- modal ---------- */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 34, 56, 0.32);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 100;
+}
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  max-width: 560px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 60px rgba(14, 34, 56, 0.18);
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 28px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.modal-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink-strong);
+}
+
+.modal-close {
+  font-size: 24px;
+  line-height: 1;
+  color: var(--faint);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.modal-close:hover {
+  color: var(--ink-strong);
+}
+
+.modal-body {
+  padding: 22px 28px 28px;
+}
+
+/* ---------- prose (modal content) ---------- */
+
+.prose {
+  color: var(--ink);
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+.prose p {
+  margin-bottom: 14px;
+}
+
+.prose h3 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 22px 0 10px;
+}
+
+.prose ul {
+  padding-left: 20px;
+  margin-bottom: 14px;
+  display: grid;
+  row-gap: 8px;
+}
+
+.prose strong {
+  color: var(--ink-strong);
+}
+
+.prose-signoff {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+.modal-social {
+  display: flex;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.modal-social .icon-link {
+  color: var(--muted);
+}
+
+.modal-social .icon-link:hover {
+  color: var(--data);
 }
 
 /* ---------- empty / placeholder states ---------- */

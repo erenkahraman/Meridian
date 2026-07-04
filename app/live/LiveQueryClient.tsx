@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { Modal } from "../components/Modal";
+import { SocialLinks } from "../components/icons";
 
 interface QuestionOption {
   id: string;
@@ -49,6 +51,11 @@ export function LiveQueryClient({
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<LiveResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Custom-question input is intentionally NOT wired to a live endpoint — it
+  // opens an explanatory gate modal instead (abuse / API-cost protection).
+  const [custom, setCustom] = useState("");
+  const [gateOpen, setGateOpen] = useState(false);
 
   // Group questions by domain for the <optgroup>s.
   const grouped = questions.reduce<Record<string, QuestionOption[]>>((acc, q) => {
@@ -105,6 +112,63 @@ export function LiveQueryClient({
           {loading ? "Querying…" : "Run live query"}
         </button>
       </div>
+      <p className="section-note">
+        The {questions.length} preset questions run live against the model.
+      </p>
+
+      {/* Custom question — gated, not wired to a public endpoint. */}
+      <div className="custom-query">
+        <div className="custom-divider">
+          <span>or ask your own</span>
+        </div>
+        <form
+          className="live-controls"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setGateOpen(true);
+          }}
+        >
+          <input
+            className="text-input"
+            type="text"
+            value={custom}
+            onChange={(e) => setCustom(e.target.value)}
+            placeholder="e.g. How should governments regulate frontier AI models?"
+            aria-label="Your own policy question"
+          />
+          <button className="btn btn-secondary" type="submit">
+            Submit question
+          </button>
+        </form>
+      </div>
+
+      <Modal
+        open={gateOpen}
+        onClose={() => setGateOpen(false)}
+        title="Custom queries are available on request"
+      >
+        <div className="prose">
+          <p>
+            <strong>Meridian</strong> measures how visible the OECD is inside
+            AI-generated answers — querying a model across real policy
+            questions, analysing each answer for institutional mentions, and
+            scoring OECD visibility against peer institutions over time.
+          </p>
+          <p>
+            It was built by <strong>Eren Kahraman</strong>
+            {" as a demonstration project for the OECD Junior AI & Communications Intelligence Officer role (COM/CISC)."}
+          </p>
+          <p>
+            Live queries on <em>custom</em> questions are gated to prevent abuse
+            and manage API cost. The {questions.length} preset questions above
+            run live and show the full pipeline; a custom run can be enabled on
+            request.
+          </p>
+          <div className="modal-social">
+            <SocialLinks size={20} />
+          </div>
+        </div>
+      </Modal>
 
       {loading && (
         <p className="section-note">

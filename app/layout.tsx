@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
+import Image from "next/image";
 import "./globals.css";
+import { HeaderActions } from "./components/HeaderActions";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,15 +23,21 @@ export default function RootLayout({
       <body>
         <header className="site-header">
           <div className="shell">
-            <Link href="/" className="wordmark">
-              Meridian
-              <span>OECD AI Visibility Monitor</span>
+            <Link href="/" className="brand" aria-label="Meridian — home">
+              <span className="brand-logo-box">
+                <Image
+                  src="/meridian.png"
+                  alt="Meridian"
+                  width={288}
+                  height={96}
+                  priority
+                  className="brand-logo"
+                />
+              </span>
+              <span className="brand-divider" aria-hidden="true" />
+              <span className="brand-tag">OECD AI Visibility Monitor</span>
             </Link>
-            <nav className="site-nav" aria-label="Main">
-              <Link href="/">Overview</Link>
-              <Link href="/geo">GEO Audit</Link>
-              <Link href="/live">Live Query</Link>
-            </nav>
+            <HeaderActions />
           </div>
         </header>
         {children}

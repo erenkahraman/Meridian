@@ -23,9 +23,9 @@ export default function LivePage() {
         <h1 className="page-title">Live Query</h1>
         <p className="page-intro">
           Ask one of the {questions.length} policy questions live and watch,
-          in real time, whether the {SUBJECT_INSTITUTION} surfaces in the
-          model&apos;s answer — the same two-step pipeline (answer, then
-          structured analysis) used to build the stored snapshots.
+          in real time, whether the {SUBJECT_INSTITUTION}
+          {" "}surfaces in the model&apos;s answer — the same two-step pipeline
+          (answer, then structured analysis) used to build the stored snapshots.
         </p>
         <LiveQueryClient questions={questions} subject={SUBJECT_INSTITUTION} />
       </section>
