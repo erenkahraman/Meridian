@@ -59,41 +59,37 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 22px;
+  padding-top: 20px;
   padding-bottom: 18px;
   gap: 20px;
 }
 
-/* Brand: logo + hairline + descriptor. The logo PNG has generous vertical
-   padding, so we render it oversized inside a clipped box. */
+/* Brand: logo with the descriptor stacked underneath. The logo PNG has
+   generous vertical padding, so we render it oversized inside a clipped box. */
 .brand {
   display: flex;
-  align-items: center;
-  gap: 14px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
 }
 
 /* The logo PNG carries a lot of vertical padding, so we render it oversized
    inside a clipped box to bring the wordmark to a sensible header height. */
 .brand-logo-box {
-  height: 30px;
+  height: 26px;
   display: flex;
   align-items: center;
   overflow: hidden;
+  margin-left: -8px;
 }
 
 .brand-logo {
-  height: 84px;
+  height: 74px;
   width: auto;
 }
 
-.brand-divider {
-  width: 1px;
-  height: 24px;
-  background: var(--line);
-}
-
 .brand-tag {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -864,6 +860,45 @@ main.shell {
 
 .modal-social .icon-link:hover {
   color: var(--data);
+}
+
+/* ---------- loading skeletons ---------- */
+
+.skeleton {
+  background: var(--line);
+  border-radius: 6px;
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.skeleton-score {
+  height: 96px;
+  width: 220px;
+  margin-top: 12px;
+}
+
+.skeleton-line {
+  height: 14px;
+  margin-top: 12px;
+}
+
+.skeleton-num {
+  height: 30px;
+  width: 64px;
+  margin-top: 12px;
+}
+
+.skeleton-block {
+  width: 100%;
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
 }
 
 /* ---------- empty / placeholder states ---------- */

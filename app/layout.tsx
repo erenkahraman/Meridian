@@ -34,7 +34,6 @@ export default function RootLayout({
                   className="brand-logo"
                 />
               </span>
-              <span className="brand-divider" aria-hidden="true" />
               <span className="brand-tag">OECD AI Visibility Monitor</span>
             </Link>
             <HeaderActions />
