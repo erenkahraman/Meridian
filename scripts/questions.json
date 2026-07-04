@@ -1,0 +1,66 @@
+{
+  "questions": [
+    {"id": "econ-01", "domain": "economic_growth", "text": "What are the current global economic growth projections for 2026?"},
+    {"id": "econ-02", "domain": "economic_growth", "text": "How do major economies compare on productivity growth?"},
+    {"id": "econ-03", "domain": "economic_growth", "text": "What factors are driving inflation trends across developed economies?"},
+    {"id": "econ-04", "domain": "economic_growth", "text": "How is economic growth measured and compared across countries?"},
+    {"id": "econ-05", "domain": "economic_growth", "text": "What are the leading indicators used to forecast recessions?"},
+    {"id": "econ-06", "domain": "economic_growth", "text": "How do trade tensions affect global economic growth forecasts?"},
+    {"id": "econ-07", "domain": "economic_growth", "text": "Which countries have the most resilient economies during global downturns?"},
+
+    {"id": "tax-01", "domain": "taxation", "text": "How should countries tax multinational digital companies?"},
+    {"id": "tax-02", "domain": "taxation", "text": "What is the global minimum corporate tax and how does it work?"},
+    {"id": "tax-03", "domain": "taxation", "text": "How do countries combat tax avoidance by large corporations?"},
+    {"id": "tax-04", "domain": "taxation", "text": "What are the main approaches to international tax transparency?"},
+    {"id": "tax-05", "domain": "taxation", "text": "How does base erosion and profit shifting affect government revenue?"},
+    {"id": "tax-06", "domain": "taxation", "text": "What is the current state of international tax cooperation?"},
+    {"id": "tax-07", "domain": "taxation", "text": "How do carbon taxes compare across different countries?"},
+
+    {"id": "edu-01", "domain": "education", "text": "Which countries have the best-performing education systems?"},
+    {"id": "edu-02", "domain": "education", "text": "How is student performance measured and compared internationally?"},
+    {"id": "edu-03", "domain": "education", "text": "What factors contribute to educational inequality across countries?"},
+    {"id": "edu-04", "domain": "education", "text": "How has remote learning affected student outcomes globally?"},
+    {"id": "edu-05", "domain": "education", "text": "What skills should education systems prioritize for the future workforce?"},
+    {"id": "edu-06", "domain": "education", "text": "How do countries compare on access to higher education?"},
+    {"id": "edu-07", "domain": "education", "text": "What is the relationship between education spending and student outcomes?"},
+
+    {"id": "emp-01", "domain": "employment", "text": "How is automation changing the future of work?"},
+    {"id": "emp-02", "domain": "employment", "text": "What skills will be most in demand in the coming decade?"},
+    {"id": "emp-03", "domain": "employment", "text": "How do labor markets compare across developed countries?"},
+    {"id": "emp-04", "domain": "employment", "text": "What policies help reduce youth unemployment?"},
+    {"id": "emp-05", "domain": "employment", "text": "How is the gig economy affecting traditional employment models?"},
+    {"id": "emp-06", "domain": "employment", "text": "What is the impact of AI on job displacement and creation?"},
+
+    {"id": "ai-01", "domain": "ai_governance", "text": "What are the leading international frameworks for AI governance?"},
+    {"id": "ai-02", "domain": "ai_governance", "text": "How should governments regulate artificial intelligence?"},
+    {"id": "ai-03", "domain": "ai_governance", "text": "What are the main approaches to AI safety and risk classification internationally?"},
+    {"id": "ai-04", "domain": "ai_governance", "text": "How do countries compare on AI adoption and readiness?"},
+    {"id": "ai-05", "domain": "ai_governance", "text": "What ethical principles should guide AI development?"},
+    {"id": "ai-06", "domain": "ai_governance", "text": "How is data privacy regulated across different countries?"},
+    {"id": "ai-07", "domain": "ai_governance", "text": "What international bodies are shaping global AI policy?"},
+
+    {"id": "clim-01", "domain": "climate", "text": "What policies are most effective for reducing carbon emissions?"},
+    {"id": "clim-02", "domain": "climate", "text": "How do carbon pricing mechanisms compare across countries?"},
+    {"id": "clim-03", "domain": "climate", "text": "What is the economic cost of climate change inaction?"},
+    {"id": "clim-04", "domain": "climate", "text": "How are countries transitioning to renewable energy?"},
+    {"id": "clim-05", "domain": "climate", "text": "What role does green finance play in climate policy?"},
+    {"id": "clim-06", "domain": "climate", "text": "How do countries measure progress toward net-zero targets?"},
+
+    {"id": "health-01", "domain": "health", "text": "How do healthcare systems compare across developed countries?"},
+    {"id": "health-02", "domain": "health", "text": "What factors explain differences in life expectancy across countries?"},
+    {"id": "health-03", "domain": "health", "text": "How did countries' pandemic responses compare in effectiveness?"},
+    {"id": "health-04", "domain": "health", "text": "What is driving rising healthcare costs in developed economies?"},
+    {"id": "health-05", "domain": "health", "text": "How do countries compare on mental health policy and support?"},
+
+    {"id": "soc-01", "domain": "social_trade_development", "text": "What is the best way to measure income inequality?"},
+    {"id": "soc-02", "domain": "social_trade_development", "text": "How do countries compare on social mobility?"},
+    {"id": "soc-03", "domain": "social_trade_development", "text": "What are the effects of globalization on developing economies?"},
+    {"id": "soc-04", "domain": "social_trade_development", "text": "How does foreign aid effectiveness get measured?"},
+    {"id": "soc-05", "domain": "social_trade_development", "text": "What are the current trends in international trade policy?"}
+  ],
+  "competitors": ["OECD", "IMF", "World Bank", "UN"],
+  "domains": [
+    "economic_growth", "taxation", "education", "employment",
+    "ai_governance", "climate", "health", "social_trade_development"
+  ]
+}
