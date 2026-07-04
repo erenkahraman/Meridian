@@ -1,40 +1,40 @@
+/*
+ * Meridian — global styles.
+ *
+ * Design direction (CLAUDE.md): institutional trust meets quiet modernity.
+ * One neutral off-white background, one deep institutional navy, one restrained
+ * data-emphasis blue. Generous whitespace, precise alignment, no decoration.
+ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html {
-  height: 100%;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --bg: #faf9f6; /* warm off-white */
+  --surface: #ffffff;
+  --ink: #24313f; /* body text */
+  --ink-strong: #0e2238; /* headings, chrome — deep institutional navy */
+  --muted: #64707c;
+  --faint: #8b959f;
+  --line: #e7e3dc; /* hairlines on the warm background */
+  --data: #1f6fb2; /* restrained OECD-adjacent blue, data emphasis only */
+  --data-soft: #dce9f4;
+  --bar-rest: #c9d2da; /* competitor bars — quiet gray-blue */
 }
 
 * {
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -42,8 +42,663 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+/* ---------- layout chrome ---------- */
+
+.shell {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.site-header {
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.site-header .shell {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-top: 28px;
+  padding-bottom: 20px;
+}
+
+.wordmark {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink-strong);
+}
+
+.wordmark span {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.site-nav {
+  display: flex;
+  gap: 28px;
+  font-size: 14px;
+}
+
+.site-nav a {
+  color: var(--muted);
+  padding-bottom: 2px;
+}
+
+.site-nav a:hover {
+  color: var(--ink-strong);
+}
+
+.site-nav a[data-active="true"] {
+  color: var(--ink-strong);
+  border-bottom: 2px solid var(--data);
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  margin-top: 96px;
+}
+
+.site-footer .shell {
+  padding-top: 24px;
+  padding-bottom: 40px;
+  font-size: 13px;
+  color: var(--faint);
+  display: flex;
+  justify-content: space-between;
+}
+
+main.shell {
+  padding-top: 56px;
+}
+
+/* ---------- shared primitives ---------- */
+
+.section {
+  margin-bottom: 72px;
+}
+
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.section-note {
+  font-size: 13px;
+  color: var(--faint);
+  margin-top: 14px;
+  max-width: 60ch;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- headline ---------- */
+
+.headline {
+  display: grid;
+  grid-template-columns: minmax(280px, 1.1fr) 2fr;
+  gap: 48px;
+  align-items: start;
+  margin-bottom: 88px;
+}
+
+.headline-score .label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.headline-score .value {
+  font-size: 96px;
+  font-weight: 650;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--ink-strong);
+  margin-top: 8px;
+}
+
+.headline-score .value small {
+  font-size: 28px;
+  font-weight: 450;
+  letter-spacing: 0;
+  color: var(--faint);
+  margin-left: 6px;
+}
+
+.headline-score .meta {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 12px;
+}
+
+.subscores {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.subscore {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px 20px;
+}
+
+.subscore .name {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.subscore .val {
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink-strong);
+  margin-top: 6px;
+}
+
+.subscore .weight {
+  font-size: 12px;
+  color: var(--faint);
+  margin-top: 4px;
+}
+
+/* ---------- bar chart (competitor comparison) ---------- */
+
+.barchart {
+  display: grid;
+  row-gap: 14px;
+}
+
+.barrow {
+  display: grid;
+  grid-template-columns: 110px 1fr 56px;
+  align-items: center;
+  gap: 16px;
+}
+
+.barrow .barlabel {
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.barrow[data-emphasis="true"] .barlabel {
+  font-weight: 600;
+  color: var(--ink-strong);
+}
+
+.bartrack {
+  display: block;
+  height: 22px;
+  background: transparent;
+  position: relative;
+}
+
+.barfill {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--bar-rest);
+}
+
+.barrow[data-emphasis="true"] .barfill {
+  background: var(--data);
+}
+
+.barvalue {
+  font-size: 14px;
+  font-weight: 500;
+  text-align: right;
+  color: var(--muted);
+}
+
+.barrow[data-emphasis="true"] .barvalue {
+  color: var(--ink-strong);
+  font-weight: 600;
+}
+
+/* sub-score detail table under the comparison */
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 32px;
+  font-size: 13.5px;
+}
+
+.comparison-table th {
+  text-align: right;
+  font-weight: 500;
+  color: var(--faint);
+  padding: 8px 0 8px 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.comparison-table th:first-child,
+.comparison-table td:first-child {
+  text-align: left;
+  padding-left: 0;
+}
+
+.comparison-table td {
+  text-align: right;
+  padding: 9px 0 9px 24px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.comparison-table tr[data-emphasis="true"] td {
+  color: var(--ink-strong);
+  font-weight: 550;
+}
+
+/* ---------- heatmap ---------- */
+
+.heatmap {
+  border-collapse: separate;
+  border-spacing: 4px;
+  width: 100%;
+}
+
+.heatmap caption {
+  caption-side: bottom;
+  text-align: left;
+  font-size: 13px;
+  color: var(--faint);
+  padding-top: 14px;
+}
+
+.heatmap th {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  text-align: left;
+  padding: 6px 10px;
+}
+
+.heatmap thead th {
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.heatmap td {
+  text-align: center;
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 12px 10px;
+  border-radius: 6px;
+  min-width: 96px;
+}
+
+/* ---------- time series ---------- */
+
+.timeseries-wrap {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px 28px 20px;
+}
+
+/* ---------- page intro (GEO / Live) ---------- */
+
+.page-title {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink-strong);
+}
+
+.page-intro {
+  margin-top: 10px;
+  max-width: 62ch;
+  color: var(--muted);
+}
+
+/* ---------- forms ---------- */
+
+.geo-form {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+  max-width: 640px;
+}
+
+.text-input {
+  flex: 1;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px 14px;
+}
+
+.text-input:focus {
+  outline: 2px solid var(--data);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.btn {
+  font: inherit;
+  font-weight: 550;
+  color: #ffffff;
+  background: var(--ink-strong);
+  border: none;
+  border-radius: 6px;
+  padding: 10px 22px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #1b3a5c;
+}
+
+.form-error {
+  margin-top: 12px;
+  font-size: 13.5px;
+  color: #a5453c;
+}
+
+/* ---------- finding panel (blocked pages) ---------- */
+
+.finding-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--data);
+  border-radius: 8px;
+  padding: 24px 28px;
+  max-width: 72ch;
+}
+
+.finding-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--data);
+  margin-bottom: 10px;
+}
+
+.finding-panel p {
+  color: var(--ink);
+}
+
+/* ---------- GEO report ---------- */
+
+.geo-result-head {
+  margin-bottom: 56px;
+}
+
+.geo-cats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.geo-cat {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 22px 24px;
+}
+
+.geo-cat-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 14px;
+}
+
+.geo-cat-name {
+  font-weight: 600;
+  color: var(--ink-strong);
+}
+
+.geo-cat-score {
+  font-weight: 600;
+  color: var(--ink-strong);
+}
+
+.geo-cat-score small {
+  font-weight: 400;
+  color: var(--faint);
+}
+
+.geo-checks {
+  list-style: none;
+  display: grid;
+  row-gap: 10px;
+  font-size: 13.5px;
+}
+
+.geo-checks li {
+  display: flex;
+  gap: 10px;
+  color: var(--muted);
+}
+
+.geo-checks strong {
+  font-weight: 550;
+  color: var(--ink);
+}
+
+.check-icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.check-pass {
+  color: #3d7a5d;
+  background: #e4efe9;
+}
+
+.check-warn {
+  color: #9a6c1f;
+  background: #f4ead7;
+}
+
+.check-fail {
+  color: #a5453c;
+  background: #f6e3e0;
+}
+
+.geo-recs {
+  max-width: 72ch;
+  padding-left: 22px;
+  display: grid;
+  row-gap: 10px;
+  color: var(--ink);
+}
+
+@media (max-width: 860px) {
+  .geo-cats {
+    grid-template-columns: 1fr;
+  }
+
+  .geo-form {
+    flex-direction: column;
+  }
+}
+
+/* ---------- live query ---------- */
+
+.live-controls {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+  margin-bottom: 8px;
+}
+
+.live-controls .text-input {
+  flex: 1;
+}
+
+.live-controls .btn {
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.live-result {
+  margin-top: 40px;
+}
+
+.live-verdict {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--bar-rest);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 44px;
+  color: var(--ink);
+  background: var(--surface);
+}
+
+.live-verdict[data-hit="true"] {
+  border-left-color: var(--data);
+}
+
+.live-verdict strong {
+  color: var(--ink-strong);
+}
+
+.answer-meta {
+  margin-top: 0;
+  margin-bottom: 14px;
+}
+
+.answer-body {
+  white-space: pre-wrap;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 22px 24px;
+  color: var(--ink);
+  margin-bottom: 48px;
+  max-width: 74ch;
+}
+
+.mention-list {
+  list-style: none;
+  display: grid;
+  row-gap: 12px;
+  max-width: 74ch;
+}
+
+.mention {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 20px;
+  background: var(--surface);
+}
+
+.mention[data-emphasis="true"] {
+  border-color: var(--data);
+  background: var(--data-soft);
+}
+
+.mention-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.mention-name {
+  font-weight: 600;
+  color: var(--ink-strong);
+}
+
+.mention-tags {
+  display: flex;
+  gap: 8px;
+}
+
+.tag {
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
+.tag-cite {
+  color: #3d7a5d;
+  background: #e4efe9;
+  border-color: #cfe3d8;
+}
+
+.mention-context {
+  margin-top: 10px;
+  font-size: 13.5px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* ---------- empty / placeholder states ---------- */
+
+.empty-state {
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: 48px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 860px) {
+  .headline {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-bottom: 64px;
+  }
+
+  .subscores {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .site-header .shell {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  main.shell {
+    padding-top: 40px;
+  }
+
+  .heatmap {
+    display: block;
+    overflow-x: auto;
   }
 }
