@@ -1,0 +1,9 @@
+-- Meridian — Supabase schema
+--
+-- Empty by design. Tables (question runs, model responses, institution
+-- mentions, computed OAVS scores) are defined in Phase 2 and Phase 3
+-- once the question set and metric are approved, and applied here as
+-- dated migrations below.
+--
+-- Example of the pattern to follow when adding a migration:
+-- -- 2026-XX-XX_initial_schema.sql
