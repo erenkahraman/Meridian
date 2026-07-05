@@ -9,7 +9,8 @@
     "lint": "eslint",
     "collect": "node scripts/collect.js",
     "score": "tsx scripts/score.ts",
-    "geo": "tsx scripts/geo-audit.ts"
+    "geo": "tsx scripts/geo-audit.ts",
+    "test:geo": "tsx --test lib/geo/tests/geo.test.ts"
   },
   "dependencies": {
     "@google/genai": "^2.10.0",

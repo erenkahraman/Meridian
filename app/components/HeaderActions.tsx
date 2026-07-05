@@ -28,7 +28,12 @@ export function HeaderActions() {
         <SocialLinks />
       </span>
 
-      <Modal open={aboutOpen} onClose={() => setAboutOpen(false)} title="About Meridian">
+      <Modal
+        open={aboutOpen}
+        onClose={() => setAboutOpen(false)}
+        title="About Meridian"
+        size="wide"
+      >
         <AboutContent />
       </Modal>
     </div>

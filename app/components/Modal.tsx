@@ -12,11 +12,14 @@ export function Modal({
   onClose,
   title,
   children,
+  size = "default",
 }: {
   open: boolean;
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  /** "wide" gives multi-tab content more room; "default" for simple dialogs. */
+  size?: "default" | "wide";
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -40,7 +43,7 @@ export function Modal({
   return (
     <div className="modal-backdrop" onClick={onClose} role="presentation">
       <div
-        className="modal"
+        className={size === "wide" ? "modal modal-wide" : "modal"}
         role="dialog"
         aria-modal="true"
         aria-label={title}

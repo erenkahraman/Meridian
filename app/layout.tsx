@@ -11,6 +11,15 @@ export const metadata: Metadata = {
   title: "Meridian — OECD AI Visibility",
   description:
     "Measuring how visible the OECD is inside AI-generated answers, compared to peer institutions, across real policy questions.",
+  icons: {
+    icon: [
+      { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-48.png", sizes: "48x48", type: "image/png" },
+    ],
+    shortcut: [{ url: "/favicon-32.png", type: "image/png" }],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({
