@@ -836,6 +836,10 @@ main.shell {
   box-shadow: 0 24px 60px rgba(14, 34, 56, 0.18);
 }
 
+.modal-wide {
+  max-width: 680px;
+}
+
 .modal-head {
   display: flex;
   align-items: center;
@@ -867,6 +871,43 @@ main.shell {
 
 .modal-body {
   padding: 22px 28px 28px;
+}
+
+/* ---------- modal tabs ---------- */
+
+.modal-tabs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 22px;
+}
+
+.modal-tab {
+  font: inherit;
+  font-size: 13.5px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 8px 12px;
+  margin-bottom: -1px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.modal-tab:hover {
+  color: var(--ink-strong);
+}
+
+.modal-tab[data-active="true"] {
+  color: var(--ink-strong);
+  font-weight: 550;
+  border-bottom-color: var(--data);
+}
+
+.modal-tabpanel {
+  min-height: 220px;
 }
 
 /* ---------- prose (modal content) ---------- */
@@ -907,6 +948,45 @@ main.shell {
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 13.5px;
+}
+
+.prose-source {
+  font-size: 12.5px;
+  color: var(--faint);
+  margin-top: -6px;
+}
+
+.prose-callout {
+  margin-top: 18px;
+  padding: 14px 16px;
+  background: var(--data-soft);
+  border-left: 3px solid var(--data);
+  border-radius: 6px;
+  font-size: 13.5px;
+}
+
+/* compact "weight — description" spec rows for the methodology tab */
+.spec-list {
+  list-style: none;
+  padding-left: 0;
+  display: grid;
+  row-gap: 10px;
+  margin-bottom: 16px;
+}
+
+.spec-list li {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  font-size: 13.5px;
+}
+
+.spec-w {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--data);
+  text-align: right;
 }
 
 .modal-social {
