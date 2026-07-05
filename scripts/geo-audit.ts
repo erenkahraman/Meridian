@@ -24,7 +24,14 @@ async function main() {
 
   console.log(`\nGEO AUDIT — ${report.url}`);
   console.log(`Fetched: ${report.fetchedAt}`);
-  console.log(`\nOVERALL AI-READABILITY SCORE: ${report.overallScore}/100\n`);
+  console.log(`\nOVERALL GEO SCORE: ${report.overallScore}/100\n`);
+
+  console.log("PLATFORM READINESS (derived, not part of the composite):");
+  for (const p of report.platforms) {
+    console.log(`   ${p.label.padEnd(22)} ${String(p.score).padStart(3)}/100`);
+    for (const b of p.blockers) console.log(`      – ${b}`);
+  }
+  console.log("");
 
   for (const cat of report.categories) {
     console.log(

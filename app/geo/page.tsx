@@ -70,9 +70,11 @@ export default async function GeoPage({
       <section className="section">
         <h1 className="page-title">GEO Audit</h1>
         <p className="page-intro">
-          Scores how AI-readable a page is — structured data, heading
-          hierarchy, metadata, and E-E-A-T signals — and lists concrete
-          improvements. Built for OECD.org pages; works on any URL.
+          Scores how discoverable and citable a page is inside AI systems —
+          AI-crawler access (robots.txt, llms.txt), content citability,
+          structured data, E-E-A-T, and technical rendering — plus per-platform
+          readiness for ChatGPT, Perplexity, and Google AI Overviews. Built for
+          OECD.org pages; works on any URL.
         </p>
 
         <form className="geo-form" method="get" action="/geo">
@@ -132,13 +134,40 @@ function AuditReport({ report }: { report: GeoAuditResult }) {
     <>
       <section className="section geo-result-head">
         <div className="headline-score">
-          <div className="label">AI-readability score</div>
+          <div className="label">GEO score</div>
           <div className="value num">
             {report.overallScore}
             <small>/ 100</small>
           </div>
           <p className="meta">{report.url}</p>
         </div>
+      </section>
+
+      <section className="section">
+        <h2 className="section-title">Platform readiness</h2>
+        <div className="platform-grid">
+          {report.platforms.map((p) => (
+            <div className="platform-card" key={p.id}>
+              <div className="platform-head">
+                <span className="platform-name">{p.label}</span>
+                <span className="platform-score num">{p.score}</span>
+              </div>
+              {p.blockers.length > 0 ? (
+                <ul className="platform-blockers">
+                  {p.blockers.map((b) => (
+                    <li key={b}>{b}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="platform-clear">No platform-specific blockers.</p>
+              )}
+            </div>
+          ))}
+        </div>
+        <p className="section-note">
+          Derived views of the same checks, re-weighted per platform — not part
+          of the composite score.
+        </p>
       </section>
 
       <section className="section">

@@ -585,8 +585,69 @@ main.shell {
   color: var(--ink);
 }
 
+/* platform readiness cards */
+
+.platform-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.platform-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 20px 22px;
+}
+
+.platform-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 12px;
+}
+
+.platform-name {
+  font-weight: 600;
+  color: var(--ink-strong);
+}
+
+.platform-score {
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--ink-strong);
+}
+
+.platform-blockers {
+  list-style: none;
+  display: grid;
+  row-gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.platform-blockers li {
+  padding-left: 14px;
+  position: relative;
+}
+
+.platform-blockers li::before {
+  content: "–";
+  position: absolute;
+  left: 0;
+  color: var(--faint);
+}
+
+.platform-clear {
+  font-size: 13px;
+  color: #3d7a5d;
+}
+
 @media (max-width: 860px) {
-  .geo-cats {
+  .geo-cats,
+  .platform-grid {
     grid-template-columns: 1fr;
   }
 
