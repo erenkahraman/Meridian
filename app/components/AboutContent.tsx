@@ -10,7 +10,7 @@
  */
 
 import { useState } from "react";
-import { SocialLinks, GITHUB_URL, LINKEDIN_URL } from "./icons";
+import { SocialLinks, GITHUB_URL } from "./icons";
 
 interface Tab {
   id: string;
@@ -245,15 +245,6 @@ const TABS: Tab[] = [
         <div className="modal-social">
           <SocialLinks size={20} />
         </div>
-        <p className="prose-source">
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
-            {GITHUB_URL.replace("https://", "")}
-          </a>
-          {" · "}
-          <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer">
-            {LINKEDIN_URL.replace("https://", "")}
-          </a>
-        </p>
       </div>
     ),
   },
