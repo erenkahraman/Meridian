@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Modal } from "../components/Modal";
 import { SocialLinks } from "../components/icons";
+import { domainLabel } from "../../lib/domains";
 
 interface QuestionOption {
   id: string;
@@ -23,17 +24,6 @@ interface LiveResult {
   answer: string;
   mentions: Mention[];
 }
-
-const DOMAIN_LABELS: Record<string, string> = {
-  economic_growth: "Economic growth",
-  taxation: "Taxation",
-  education: "Education",
-  employment: "Employment",
-  ai_governance: "AI governance",
-  climate: "Climate",
-  health: "Health",
-  social_trade_development: "Social, trade & development",
-};
 
 /** Drop markdown bold markers for clean plain-text rendering (no HTML injection). */
 function cleanAnswer(text: string): string {
@@ -99,7 +89,7 @@ export function LiveQueryClient({
           disabled={loading}
         >
           {Object.entries(grouped).map(([domain, qs]) => (
-            <optgroup key={domain} label={DOMAIN_LABELS[domain] ?? domain}>
+            <optgroup key={domain} label={domainLabel(domain)}>
               {qs.map((q) => (
                 <option key={q.id} value={q.id}>
                   {q.text}
