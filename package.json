@@ -10,7 +10,8 @@
     "collect": "node scripts/collect.js",
     "score": "tsx scripts/score.ts",
     "geo": "tsx scripts/geo-audit.ts",
-    "test:geo": "tsx --test lib/geo/tests/geo.test.ts"
+    "test:geo": "tsx --test lib/geo/tests/geo.test.ts",
+    "qa-check": "tsx scripts/qa-check.ts"
   },
   "dependencies": {
     "@google/genai": "^2.10.0",
