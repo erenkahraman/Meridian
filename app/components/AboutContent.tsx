@@ -62,7 +62,8 @@ const TABS: Tab[] = [
           Bank, UN).
         </p>
         <p className="prose-source">
-          Source: analysis of 50 policy questions run through an LLM.
+          Source: analysis of 168 policy questions — twelve for each of the
+          OECD&apos;s fourteen substantive directorates — run through an LLM.
         </p>
 
         <h3>GEO Audit — Generative Engine Optimisation</h3>
@@ -93,8 +94,10 @@ const TABS: Tab[] = [
       <div className="prose">
         <h3>OAVS composition</h3>
         <p>
-          A weighted composite (0–100) of four sub-components, each scored per
-          question and averaged across the set:
+          The sampling frame is 168 policy questions, twelve per OECD
+          directorate, so the score reflects the OECD&apos;s actual portfolio.
+          Each institution receives a weighted composite (0–100) of four
+          sub-components, scored per question and averaged across the set:
         </p>
         <ul className="spec-list">
           <li>
@@ -127,6 +130,14 @@ const TABS: Tab[] = [
             </span>
           </li>
         </ul>
+        <p>
+          A quality-assurance layer cross-checks every extraction: an
+          independent regex search over the same raw answer (institution names
+          and known aliases) flags any mention the LLM analysis missed. Flags
+          are reported, never auto-corrected — scores always come from the
+          controlled extraction, with the cross-check as evidence of its
+          reliability.
+        </p>
 
         <h3>GEO Audit composition</h3>
         <p>Five weighted categories combine into a 0–100 composite:</p>

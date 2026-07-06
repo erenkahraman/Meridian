@@ -4,6 +4,7 @@
  */
 
 import type { HeatmapRow } from "../../lib/dashboard";
+import { domainLabel } from "../../lib/domains";
 
 /** Linear interpolation between the warm neutral and the deep data blue. */
 function cellColor(value: number): { background: string; color: string } {
@@ -17,18 +18,6 @@ function cellColor(value: number): { background: string; color: string } {
     color: t > 0.45 ? "#ffffff" : "var(--ink-strong)",
   };
 }
-
-/** "social_trade_development" -> "Social, trade & development" style labels. */
-const DOMAIN_LABELS: Record<string, string> = {
-  economic_growth: "Economic growth",
-  taxation: "Taxation",
-  education: "Education",
-  employment: "Employment",
-  ai_governance: "AI governance",
-  climate: "Climate",
-  health: "Health",
-  social_trade_development: "Social, trade & development",
-};
 
 export function Heatmap({
   rows,
@@ -56,7 +45,7 @@ export function Heatmap({
       <tbody>
         {rows.map((row) => (
           <tr key={row.domain}>
-            <th scope="row">{DOMAIN_LABELS[row.domain] ?? row.domain}</th>
+            <th scope="row">{domainLabel(row.domain)}</th>
             {row.cells.map((cell) => {
               const style = cellColor(cell.oavs);
               return (

@@ -1,22 +1,24 @@
 /**
  * dashboard.ts — server-side data assembly for the dashboard.
  *
- * Pulls stored runs out of Supabase and shapes them for the overview screen:
- * headline OAVS, competitor comparison, per-domain heatmap matrix, and the
- * OAVS time series across runs. Server-only (uses the privileged Supabase
- * client) — never import from a client component.
+ * Pulls the latest stored run out of Supabase and shapes it for the overview
+ * screen: headline OAVS, competitor comparison, per-domain heatmap matrix,
+ * and the live figures the Findings narrative interpolates (share of voice,
+ * mention counts, QA cross-check result). Server-only (uses the privileged
+ * Supabase client) — never import from a client component.
  *
- * Performance: exactly TWO Supabase round trips regardless of how many runs
- * exist — one for the runs list, one joined query for every run's responses
- * with their mentions embedded. The result is then cached (5-minute
- * revalidate) because the underlying data only changes when a collection run
- * executes.
+ * Run selection: only runs whose question_count matches the CURRENT question
+ * set are considered. Older runs collected against a previous question set
+ * remain stored (the collection history is append-only) but are not
+ * comparable, so the dashboard never mixes them into what it displays.
+ *
+ * Performance: two Supabase round trips, then cached for 5 minutes — the
+ * data only changes when a collection run executes.
  */
 
 import { unstable_cache } from "next/cache";
 import { createSupabaseClient } from "./supabase.js";
 import {
-  computeOAVS,
   computeOAVSByDomain,
   DEFAULT_OAVS_WEIGHTS,
   SUBJECT_INSTITUTION,
@@ -25,6 +27,11 @@ import {
   type OAVSResult,
 } from "./metric";
 import { compareInstitutions } from "./scores";
+// The same regex cross-check the collector runs inline; re-computed here so
+// the QA figure shown in Findings always reflects the displayed run.
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore — plain ESM JS module without type declarations
+import { qaDiscrepancies } from "./qa.js";
 import questionSet from "../scripts/questions.json";
 
 export interface RunMeta {
@@ -40,33 +47,43 @@ export interface HeatmapRow {
   cells: { institution: string; oavs: number }[];
 }
 
-export interface SeriesPoint {
-  runId: string;
-  date: string;
-  oavs: number;
-}
-
 export interface OverviewData {
   run: RunMeta | null;
   subject: string;
   subjectResult: OAVSResult | null;
   comparison: OAVSResult[];
   heatmap: HeatmapRow[];
-  series: SeriesPoint[];
   institutions: string[];
+  domainsPerQuestionCount: number;
+  /** Subject-institution mention count vs all tracked mentions (for prose). */
+  mentionCounts: { subject: number; total: number };
+  /** Regex-vs-LLM QA cross-check over this run's raw answers. */
+  qa: { flaggedResponses: number; totalResponses: number };
 }
 
 /** Shape of one joined row from the responses-with-mentions query. */
 interface JoinedResponseRow {
-  run_id: string;
   question_id: string;
   domain: string;
+  raw_answer: string;
   mentions: {
     institution: string;
     position: number;
     cites_publication: boolean;
   }[];
 }
+
+const EMPTY: OverviewData = {
+  run: null,
+  subject: SUBJECT_INSTITUTION,
+  subjectResult: null,
+  comparison: [],
+  heatmap: [],
+  institutions: INSTITUTIONS,
+  domainsPerQuestionCount: 0,
+  mentionCounts: { subject: 0, total: 0 },
+  qa: { flaggedResponses: 0, totalResponses: 0 },
+};
 
 /**
  * Uncached loader. Exported for verification/tooling; the app should use
@@ -75,71 +92,39 @@ interface JoinedResponseRow {
 export async function loadOverviewData(): Promise<OverviewData> {
   const supabase = createSupabaseClient();
 
-  // Round trip 1: every run, oldest first (drives the time series).
+  // Round trip 1: the newest run collected against the CURRENT question set.
   const { data: runs, error } = await supabase
     .from("runs")
     .select("id, created_at, model, question_count")
-    .order("created_at", { ascending: true });
+    .eq("question_count", questionSet.questions.length)
+    .order("created_at", { ascending: false })
+    .limit(1);
   if (error) throw new Error(`loadOverviewData/runs: ${error.message}`);
+  const latest = runs?.[0];
+  if (!latest) return EMPTY;
 
-  if (!runs || runs.length === 0) {
-    return {
-      run: null,
-      subject: SUBJECT_INSTITUTION,
-      subjectResult: null,
-      comparison: [],
-      heatmap: [],
-      series: [],
-      institutions: INSTITUTIONS,
-    };
-  }
-
-  // Round trip 2: all responses for those runs with mentions embedded —
-  // replaces the former 2-queries-per-run loop (N+1) plus a duplicate fetch
-  // of the latest run.
+  // Round trip 2: that run's responses with mentions embedded. raw_answer is
+  // included so the QA cross-check can be recomputed over the displayed data.
   const { data: rows, error: rErr } = await supabase
     .from("responses")
     .select(
-      "run_id, question_id, domain, mentions(institution, position, cites_publication)",
+      "question_id, domain, raw_answer, mentions(institution, position, cites_publication)",
     )
-    .in(
-      "run_id",
-      runs.map((r) => r.id),
-    )
+    .eq("run_id", latest.id)
     .order("question_id");
   if (rErr) throw new Error(`loadOverviewData/responses: ${rErr.message}`);
 
-  // Group into AnalyzedResponse[] per run (rows arrive ordered by question_id,
-  // matching the previous per-run query ordering).
-  const byRun = new Map<string, AnalyzedResponse[]>();
-  for (const row of (rows ?? []) as JoinedResponseRow[]) {
-    const list = byRun.get(row.run_id) ?? [];
-    list.push({
-      questionId: row.question_id,
-      domain: row.domain,
-      mentions: row.mentions.map((m) => ({
-        institution: m.institution,
-        position: m.position,
-        citesPublication: m.cites_publication,
-      })),
-    });
-    byRun.set(row.run_id, list);
-  }
-
-  // Time series: OAVS of the subject institution for every run.
-  const series: SeriesPoint[] = runs.map((run) => ({
-    runId: run.id,
-    date: run.created_at,
-    oavs: computeOAVS(
-      byRun.get(run.id) ?? [],
-      DEFAULT_OAVS_WEIGHTS,
-      SUBJECT_INSTITUTION,
-    ).oavs,
+  const joined = (rows ?? []) as JoinedResponseRow[];
+  const responses: AnalyzedResponse[] = joined.map((row) => ({
+    questionId: row.question_id,
+    domain: row.domain,
+    mentions: row.mentions.map((m) => ({
+      institution: m.institution,
+      position: m.position,
+      citesPublication: m.cites_publication,
+    })),
   }));
 
-  // Everything else comes from the latest run — same data, no re-fetch.
-  const latest = runs[runs.length - 1];
-  const responses = byRun.get(latest.id) ?? [];
   const comparison = compareInstitutions(responses);
   const subjectResult =
     comparison.find((c) => c.institution === SUBJECT_INSTITUTION) ?? null;
@@ -164,6 +149,27 @@ export async function loadOverviewData(): Promise<OverviewData> {
     })),
   }));
 
+  // Mention counts for the narrative ("X of Y institutional mentions").
+  let subjectMentions = 0;
+  let totalMentions = 0;
+  for (const r of responses) {
+    for (const m of r.mentions) {
+      if (!INSTITUTIONS.includes(m.institution)) continue;
+      totalMentions += 1;
+      if (m.institution === SUBJECT_INSTITUTION) subjectMentions += 1;
+    }
+  }
+
+  // QA cross-check, recomputed over the displayed run's raw answers.
+  const flaggedResponses = joined.filter(
+    (row) =>
+      qaDiscrepancies(
+        row.raw_answer,
+        row.mentions.map((m) => m.institution),
+        INSTITUTIONS,
+      ).length > 0,
+  ).length;
+
   return {
     run: {
       id: latest.id,
@@ -175,8 +181,12 @@ export async function loadOverviewData(): Promise<OverviewData> {
     subjectResult,
     comparison,
     heatmap,
-    series,
     institutions: INSTITUTIONS,
+    domainsPerQuestionCount: Math.round(
+      questionSet.questions.length / questionSet.domains.length,
+    ),
+    mentionCounts: { subject: subjectMentions, total: totalMentions },
+    qa: { flaggedResponses, totalResponses: responses.length },
   };
 }
 
@@ -188,6 +198,6 @@ export async function loadOverviewData(): Promise<OverviewData> {
  */
 export const getOverviewData = unstable_cache(
   loadOverviewData,
-  ["overview-data"],
+  ["overview-data-v3"],
   { revalidate: 300, tags: ["overview"] },
 );

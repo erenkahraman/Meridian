@@ -29,6 +29,7 @@ import { dirname, join } from "node:path";
 import { createLLMClient } from "../lib/llm.js";
 import { createSupabaseClient } from "../lib/supabase.js";
 import { answerAndAnalyze } from "../lib/analyze.js";
+import { qaDiscrepancies } from "../lib/qa.js";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 
@@ -156,6 +157,14 @@ async function main() {
         institutions,
       );
 
+      // Independent regex cross-check: institutions the regex found in the raw
+      // answer that the LLM did NOT extract. Flag only — scores are untouched.
+      const qaFlags = qaDiscrepancies(
+        rawAnswer,
+        mentions.map((m) => m.institution),
+        institutions,
+      );
+
       records.push({
         questionId: q.id,
         domain: q.domain,
@@ -163,6 +172,7 @@ async function main() {
         rawAnswer,
         rawAnalysis,
         mentions,
+        qaFlags,
       });
 
       const preview =
@@ -171,6 +181,11 @@ async function main() {
       console.log(`\n--- RAW ANALYSIS JSON ---\n${rawAnalysis.trim()}`);
       console.log(`\n--- PARSED MENTIONS ---`);
       console.log(JSON.stringify(mentions, null, 2));
+      if (qaFlags.length > 0) {
+        console.log(
+          `\n!! QA FLAG — regex found ${qaFlags.join(", ")} in the answer but the LLM did not extract ${qaFlags.length > 1 ? "them" : "it"}.`,
+        );
+      }
     } catch (err) {
       console.error(`\n!! FAILED on ${q.id}: ${err.message}`);
       failures.push({ questionId: q.id, error: err.message });
@@ -192,10 +207,18 @@ async function main() {
     ),
   );
 
+  const flaggedRecords = records.filter((r) => r.qaFlags.length > 0);
+
   console.log(`\n${"=".repeat(70)}`);
   console.log(
     `Done. ${records.length} succeeded, ${failures.length} failed. Artifact: ${artifactPath}`,
   );
+  console.log(
+    `QA: ${flaggedRecords.length} response(s) where regex found an institution the LLM missed.`,
+  );
+  for (const r of flaggedRecords) {
+    console.log(`   ${r.questionId} (${r.domain}): ${r.qaFlags.join(", ")}`);
+  }
 
   if (DRY_RUN) {
     console.log("DRY RUN — nothing written to Supabase.");
